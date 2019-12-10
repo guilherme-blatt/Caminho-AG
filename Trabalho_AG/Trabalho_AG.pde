@@ -1,21 +1,23 @@
-int x = 0, y = 0;
-int step = 20;
-float melhor_caminho[] = {0};
-float melhor_fit = 999;
+int x = 0, y = 0;                              //Variáveis que indicam o as coordenadas do destino
+int xi, yi;                                    //Variáveis auxiliares para cálculo dos trajetos
+int xinicio = 400, yinicio = 550;
+int step = 20;                                 //Variável que indica o passo das linhas
+float melhor_caminho[] = {0};                  //Vetor que armazena o melhor caminho encontrado até o momento
+float melhor_fit = 999;                        //Variável que armazena o melhor valor de fit já encontrado
 
-Obstaculo[] obs = new Obstaculo[2];
-Caminho cam = new Caminho();
+Obstaculo[] obs = new Obstaculo[2];            //Vetor com todos os obstáculos
+Caminho cam = new Caminho();                   //Objeto que possui todos os caminhos e funcções de AG
 void setup(){
   start();
   size(800, 600);
   
   
-  //x = (int) random(0, 800);
+  //x = (int) random(0, 800);                  //Opção para um ponto aleatório de destino
   //y = (int) random(0, 500);
-  x = 400;
+  x = 400;                                     //Posição do destino
   y = 100;
   
-  obs[0] = new Obstaculo(0, 500, 200, 30);
+  obs[0] = new Obstaculo(0, 500, 200, 30);     //Definição dos obstáculos e suas coordenadas
   obs[1] = new Obstaculo(400, 400, 400, 30);
 }
 
@@ -24,7 +26,7 @@ void draw(){
    
    //Desenha Inicio
    fill(0);
-   ellipse(400, 550, 10, 10);
+   ellipse(xinicio, yinicio, 10, 10);
    
    //Desenha destino
   fill(0, 255, 0);
@@ -37,41 +39,23 @@ void draw(){
 
   
   for(int j = 0; j < cam.caminhos.length; j++){
-    int xi = 400, yi = 550;
-    for(int i = 0; i < cam.caminhos[j].length; i++){
-      int xii = (int)(xi - step*sin(cam.caminhos[j][i]));
-      int yii = (int)(yi - step*cos(cam.caminhos[j][i]));
-      
-      boolean colisao = false;
-      
-      for(int k = 0; k < obs.length; k++){
-        if(obs[k].lineRect(xi, yi, xii, yii)) colisao = true;
-      }
-      
-      if(colisao)
-        break;
-      
-      stroke(0, 0, 255);
-      line(xi, yi, xii, yii);
-      stroke(0);
-      
-      xi = xii;
-      yi = yii;
-    }
+
+    desenha_caminho(cam.caminhos[j], color(0, 0, 255));
     if(cam.fitness(xi, yi, j) < melhor_fit){
       melhor_fit = cam.fitness(xi, yi, j);
       melhor_caminho = cam.caminhos[j];
     }
     println("Caminho: ", j, ". Fitness: ", cam.fitness(xi, yi, j));
   }
-  desenha_caminho(melhor_caminho);
+  desenha_caminho(melhor_caminho, color(255, 0, 0));
   delay(1000);
     
 }
 
 
-void desenha_caminho(float caminho[]){
-  int xi = 400, yi = 550;
+void desenha_caminho(float caminho[], color c){
+    xi = xinicio;
+    yi = yinicio;
     for(int i = 0; i < caminho.length; i++){
       int xii = (int)(xi - step*sin(caminho[i]));
       int yii = (int)(yi - step*cos(caminho[i]));
@@ -85,7 +69,7 @@ void desenha_caminho(float caminho[]){
       if(colisao)
         break;
       
-      stroke(255, 0, 0);
+      stroke(c);
       line(xi, yi, xii, yii);
       stroke(0);
       

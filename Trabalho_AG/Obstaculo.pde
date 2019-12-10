@@ -49,11 +49,11 @@ boolean lineLine(float x1, float y1, float x2, float y2, float x3, float y3, flo
         if (uA >= 0 && uA <= 1 && uB >= 0 && uB <= 1) {
         
         // optionally, draw a circle where the lines meet
-        float intersectionX = x1 + (uA * (x2-x1));
+        /*float intersectionX = x1 + (uA * (x2-x1));
         float intersectionY = y1 + (uA * (y2-y1));
         fill(255,0,0);
         noStroke();
-        //ellipse(intersectionX, intersectionY, 20, 20);
+        ellipse(intersectionX, intersectionY, 20, 20);*/
         
         return true;
     }
