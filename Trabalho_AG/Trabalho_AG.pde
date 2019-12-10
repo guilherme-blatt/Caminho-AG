@@ -18,7 +18,7 @@ void setup(){
   y = 100;
   
   obs[0] = new Obstaculo(0, 500, 200, 30);     //Definição dos obstáculos e suas coordenadas
-  obs[1] = new Obstaculo(400, 400, 400, 30);
+  obs[1] = new Obstaculo(300, 500, 400, 30);
 }
 
 void draw(){
@@ -48,7 +48,7 @@ void draw(){
     println("Caminho: ", j, ". Fitness: ", cam.fitness(xi, yi, j));
   }
   desenha_caminho(melhor_caminho, color(255, 0, 0));
-  delay(1000);
+  delay(500);
     
 }
 
@@ -69,12 +69,14 @@ void desenha_caminho(float caminho[], color c){
       if(colisao)
         break;
       
+      if(dist(xii, yii, x, y) < 10)
+        break;
+      
       stroke(c);
       line(xi, yi, xii, yii);
       stroke(0);
       
       xi = xii;
       yi = yii;
-    }
-  
+    }  
 }
