@@ -12,13 +12,16 @@ void setup(){
   start();
   size(800, 600);
   
-  
-  //x = (int) random(0, 800);                  //Opção para um ponto aleatório de destino
+  //Opção para um ponto aleatório de destino
+  //x = (int) random(0, 800);                  
   //y = (int) random(0, 500);
-  x = 400;                                     //Posição do destino
+  
+  //Posição do destino
+  x = 400;                                     
   y = 100;
   
-  obs[0] = new Obstaculo(0, 500, 200, 30);     //Definição dos obstáculos e suas coordenadas
+  //Definição dos obstáculos e suas coordenadas
+  obs[0] = new Obstaculo(0, 500, 200, 30);     
   obs[1] = new Obstaculo(300, 500, 400, 30);
 }
 
@@ -29,10 +32,11 @@ void draw(){
    fill(0);
    ellipse(xinicio, yinicio, 10, 10);
    
-   //Desenha destino
+  //Desenha destino
   fill(0, 255, 0);
   ellipse(x, y, 10, 10);
   
+  //Variavel para armarzenar o melhor fit da geração
   float melhor_fit_gen = 999;
   
   //Desenha todos obstáculos
@@ -53,7 +57,7 @@ void draw(){
     if(cam.fitness(xi, yi, j) < melhor_fit_gen){
       melhor_fit_gen = cam.fitness(xi, yi, j);
     }
-    println("Caminho: ", j, ". Fitness: ", cam.fitness(xi, yi, j));
+   // println("Caminho: ", j, ". Fitness: ", cam.fitness(xi, yi, j));
     
   }
   textSize(18);

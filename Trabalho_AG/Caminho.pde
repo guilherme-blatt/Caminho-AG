@@ -1,4 +1,4 @@
-int POP_SIZE = 10;
+int POP_SIZE = 100;
 int NUMBER_SEG = 40;
 
 class Caminho{
