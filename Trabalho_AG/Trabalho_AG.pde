@@ -1,5 +1,8 @@
 int x = 0, y = 0;
 int step = 20;
+float melhor_caminho[] = {0};
+float melhor_fit = 999;
+
 Obstaculo[] obs = new Obstaculo[2];
 Caminho cam = new Caminho();
 void setup(){
@@ -30,7 +33,8 @@ void draw(){
   for(int i = 0; i < obs.length; i++)
     obs[i].desenhar();
   
-  Caminho cam = new Caminho();
+  Caminho cam = new Caminho(); //APENAS PARA TESTE
+
   
   for(int j = 0; j < cam.caminhos.length; j++){
     int xi = 400, yi = 550;
@@ -54,8 +58,39 @@ void draw(){
       xi = xii;
       yi = yii;
     }
+    if(cam.fitness(xi, yi, j) < melhor_fit){
+      melhor_fit = cam.fitness(xi, yi, j);
+      melhor_caminho = cam.caminhos[j];
+    }
     println("Caminho: ", j, ". Fitness: ", cam.fitness(xi, yi, j));
   }
+  desenha_caminho(melhor_caminho);
   delay(1000);
     
+}
+
+
+void desenha_caminho(float caminho[]){
+  int xi = 400, yi = 550;
+    for(int i = 0; i < caminho.length; i++){
+      int xii = (int)(xi - step*sin(caminho[i]));
+      int yii = (int)(yi - step*cos(caminho[i]));
+      
+      boolean colisao = false;
+      
+      for(int k = 0; k < obs.length; k++){
+        if(obs[k].lineRect(xi, yi, xii, yii)) colisao = true;
+      }
+      
+      if(colisao)
+        break;
+      
+      stroke(255, 0, 0);
+      line(xi, yi, xii, yii);
+      stroke(0);
+      
+      xi = xii;
+      yi = yii;
+    }
+  
 }
