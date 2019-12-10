@@ -4,6 +4,7 @@ int xinicio = 400, yinicio = 550;
 int step = 20;                                 //Variável que indica o passo das linhas
 float melhor_caminho[] = {0};                  //Vetor que armazena o melhor caminho encontrado até o momento
 float melhor_fit = 999;                        //Variável que armazena o melhor valor de fit já encontrado
+int gen = 0;
 
 Obstaculo[] obs = new Obstaculo[2];            //Vetor com todos os obstáculos
 Caminho cam = new Caminho();                   //Objeto que possui todos os caminhos e funcções de AG
@@ -32,12 +33,15 @@ void draw(){
   fill(0, 255, 0);
   ellipse(x, y, 10, 10);
   
+  float melhor_fit_gen = 999;
+  
+  //Desenha todos obstáculos
   for(int i = 0; i < obs.length; i++)
     obs[i].desenhar();
   
   Caminho cam = new Caminho(); //APENAS PARA TESTE
 
-  
+  gen++;
   for(int j = 0; j < cam.caminhos.length; j++){
 
     desenha_caminho(cam.caminhos[j], color(0, 0, 255));
@@ -45,8 +49,19 @@ void draw(){
       melhor_fit = cam.fitness(xi, yi, j);
       melhor_caminho = cam.caminhos[j];
     }
+    
+    if(cam.fitness(xi, yi, j) < melhor_fit_gen){
+      melhor_fit_gen = cam.fitness(xi, yi, j);
+    }
     println("Caminho: ", j, ". Fitness: ", cam.fitness(xi, yi, j));
+    
   }
+  textSize(18);
+  fill(255, 0, 0);
+  text("Best Fit Overall: " + melhor_fit, 10, 20);
+  fill(0);
+  text("Best Generation Fit: " + melhor_fit_gen, 10, 40);
+  text("Generation: " + gen, 10, 60);
   desenha_caminho(melhor_caminho, color(255, 0, 0));
   delay(500);
     
