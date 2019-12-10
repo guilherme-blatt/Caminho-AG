@@ -1,5 +1,5 @@
 int x = 0, y = 0;
-int step = 50;
+int step = 20;
 Obstaculo[] obs = new Obstaculo[2];
 Caminho cam = new Caminho();
 void setup(){
@@ -37,6 +37,15 @@ void draw(){
     for(int i = 0; i < cam.caminhos[j].length; i++){
       int xii = (int)(xi - step*sin(cam.caminhos[j][i]));
       int yii = (int)(yi - step*cos(cam.caminhos[j][i]));
+      
+      boolean colisao = false;
+      
+      for(int k = 0; k < obs.length; k++){
+        if(obs[k].lineRect(xi, yi, xii, yii)) colisao = true;
+      }
+      
+      if(colisao)
+        break;
       
       stroke(0, 0, 255);
       line(xi, yi, xii, yii);

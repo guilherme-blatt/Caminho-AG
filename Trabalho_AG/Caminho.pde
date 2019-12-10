@@ -1,12 +1,15 @@
+int POP_SIZE = 10;
+int NUMBER_SEG = 20;
+
 class Caminho{
  float[] melhorcaminho = {0, 1, 1.1, 0.6, 0.8}; 
  
- float[][] caminhos = new float[10][20];
- float[] fitness = new float[10];
+ float[][] caminhos = new float[POP_SIZE][NUMBER_SEG];
+ float[] fitness = new float[POP_SIZE];
  
  Caminho(){
-   for(int i = 0; i < 10; i++){
-     for(int j = 0; j < 20; j++){
+   for(int i = 0; i < POP_SIZE; i++){
+     for(int j = 0; j < NUMBER_SEG; j++){
         caminhos[i][j] = random(-PI/2, PI/2);   
      }
    }
