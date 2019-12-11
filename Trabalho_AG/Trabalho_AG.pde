@@ -50,7 +50,7 @@ void draw(){
  
 
   gen++;
-  for(int j = 0; j < cam.caminhos.length; j++){
+  for(int j = 0; j < 10; j++){
     desenha_caminho(cam.caminhos[j], color(0, 0, 255));
   }
   
@@ -67,7 +67,7 @@ void draw(){
   text("Best Generation Fit: " + melhor_fit_gen, 10, 40);
   text("Generation: " + gen, 10, 60);
   desenha_caminho(melhor_caminho, color(255, 0, 0));
-  delay(50);
+  delay(100);
   
   
   cam.evolve();

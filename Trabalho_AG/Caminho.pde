@@ -1,4 +1,4 @@
-int POP_SIZE = 50;
+int POP_SIZE = 150;
 int NUMBER_SEG = 40;
 
 class Caminho{
@@ -13,7 +13,7 @@ class Caminho{
   Caminho(){
     for(int i = 0; i < POP_SIZE; i++){
       for(int j = 0; j < NUMBER_SEG; j++){
-        caminhos[i][j] = random(-PI/2, PI/2);   
+        caminhos[i][j] = random(-PI/4, PI/4);   
       }
     }
   }
@@ -48,18 +48,22 @@ class Caminho{
   float fitness(float[] caminho){
     xi = xinicio;
     yi = yinicio;
+    float fit = 0;
+    int k = 0;
     for(int i = 0; i < caminho.length; i++){
       int xii = (int)(xi - step*sin(caminho[i]));
       int yii = (int)(yi - step*cos(caminho[i]));
       
       boolean colisao = false;
       
-      for(int k = 0; k < obs.length; k++){
+      for(k = 0; k < obs.length; k++){
         if(obs[k].lineRect(xi, yi, xii, yii)) colisao = true;
       }
       
-      if(colisao)
+      if(colisao){
+        fit += 1000;
         break;
+      }
       
       if(dist(xii, yii, x, y) < 10)
         break;
@@ -67,7 +71,7 @@ class Caminho{
       xi = xii;
       yi = yii;
     }
-    float fit = dist(x, y, xi, yi);
+    fit += dist(x, y, xi, yi)*k;
     return fit;
   }
   
