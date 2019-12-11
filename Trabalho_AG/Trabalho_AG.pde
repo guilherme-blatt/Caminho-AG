@@ -52,12 +52,12 @@ void draw(){
 
     desenha_caminho(cam.caminhos[j], color(0, 0, 255));
     if(cam.fitness(xi, yi, j) < melhor_fit){
-      melhor_fit = cam.fitness(xi, yi, j);
+      melhor_fit = cam.fitness(xi, yi, j, 0);
       melhor_caminho = cam.caminhos[j];
     }
     
     if(cam.fitness(xi, yi, j) < melhor_fit_gen){
-      melhor_fit_gen = cam.fitness(xi, yi, j);
+      melhor_fit_gen = cam.fitness(xi, yi, j, 0);
     }
    // println("Caminho: ", j, ". Fitness: ", cam.fitness(xi, yi, j));
     
