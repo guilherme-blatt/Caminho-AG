@@ -21,8 +21,9 @@ void setup(){
   y = 100;
   
   //Definição dos obstáculos e suas coordenadas
-  obs[0] = new Obstaculo(0, 500, 200, 30);     
+  obs[0] = new Obstaculo(0, 450, 200, 30);     
   obs[1] = new Obstaculo(300, 500, 400, 30);
+  cam = new Caminho();          
 }
 
 void draw(){
@@ -43,7 +44,8 @@ void draw(){
   for(int i = 0; i < obs.length; i++)
     obs[i].desenhar();
   
-  Caminho cam = new Caminho(); //APENAS PARA TESTE
+ // Caminho cam = new Caminho(); //APENAS PARA TESTE
+ 
 
   gen++;
   for(int j = 0; j < cam.caminhos.length; j++){
@@ -67,7 +69,10 @@ void draw(){
   text("Best Generation Fit: " + melhor_fit_gen, 10, 40);
   text("Generation: " + gen, 10, 60);
   desenha_caminho(melhor_caminho, color(255, 0, 0));
-  delay(500);
+  delay(50);
+  
+  
+  cam.evoluir();
     
 }
 
