@@ -23,7 +23,9 @@ void setup(){
   //Definição dos obstáculos e suas coordenadas
   obs[0] = new Obstaculo(0, 450, 200, 30);     
   obs[1] = new Obstaculo(300, 500, 400, 30);
-  cam = new Caminho();          
+  cam = new Caminho();
+  cam.fitall();
+  cam.sort();
 }
 
 void draw(){
@@ -49,19 +51,15 @@ void draw(){
 
   gen++;
   for(int j = 0; j < cam.caminhos.length; j++){
-
     desenha_caminho(cam.caminhos[j], color(0, 0, 255));
-    if(cam.fitness(xi, yi, j) < melhor_fit){
-      melhor_fit = cam.fitness(xi, yi, j, 0);
-      melhor_caminho = cam.caminhos[j];
-    }
-    
-    if(cam.fitness(xi, yi, j) < melhor_fit_gen){
-      melhor_fit_gen = cam.fitness(xi, yi, j, 0);
-    }
-   // println("Caminho: ", j, ". Fitness: ", cam.fitness(xi, yi, j));
-    
   }
+  
+  if(cam.fitness[0] < melhor_fit){
+    melhor_fit = cam.fitness[0];
+    melhor_caminho = cam.caminhos[0];
+  }
+  melhor_fit_gen = cam.fitness[0];
+  
   textSize(18);
   fill(255, 0, 0);
   text("Best Fit Overall: " + melhor_fit, 10, 20);
@@ -72,7 +70,7 @@ void draw(){
   delay(50);
   
   
-  cam.evoluir();
+  cam.evolve();
     
 }
 
