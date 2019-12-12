@@ -1,8 +1,8 @@
 # Caminho-AG
 
-Guilherme Blatt
+Guilherme Blatt - 
 
-Igor Rodrigues
+Igor Rodrigues - 9771654
 
 ## Vídeo
 Abaixo é possível ver um vídeo criado para demostrar o funcionamento do programa
@@ -23,7 +23,7 @@ A plataforma escolhida foi o Processing 3.0, que permite uma implementação gr�
 colocado no algoritmo em si. Além disso, é possível fazer uma compilação em java para que o programa seja rodado em outros computadores.
 
 ## Algoritmo
-
+O Algoritmo Evolutivo foi implementado na classe Caminho. Ele consiste em funções que realizam os passos principais vistos em aula: inicialização da população, avaliação dos indivíduos, seleção para cruzamento, crossover, mutação dos filhos e reorganização da população. A cada execução do algoritmo, a população é criada com parâmetros aleatórios, avaliada e ordenada. Em seguida, para cada geração, são realizados cruzamentos para criar a nova geração: um terço dos filhos vem do crossover com o melhor da geração autal com outro indivíduo aleatório (podendo ser ele próprio); outro terço vem do crossover do melhor com o segundo melhor; o último terço são indivíduos aleatórios. Após isso, uma quantidade aleatória de filhos sofre mutação em seus parâmetros, trocando-os ao acaso por um novo parâmetro aleatório. Feita a mutação, todos os filhos são avaliados e, juntamente da geração atual, são ordenados com base nas avaliações e a metade melhor é mantida para a próxima geração.
 
 ## Como rodar
 É possível rodar o programa de duas maneiras distintas:

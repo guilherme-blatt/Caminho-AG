@@ -1,12 +1,12 @@
 int x = 0, y = 0;                              //Variáveis que indicam o as coordenadas do destino
 int xi, yi;                                    //Variáveis auxiliares para cálculo dos trajetos
-int xinicio = 100, yinicio = 550;
+int xinicio = 400, yinicio = 550;
 int step = 30;                                 //Variável que indica o passo das linhas
 float melhor_caminho[] = {0};                  //Vetor que armazena o melhor caminho encontrado até o momento
 float melhor_fit = 999;                        //Variável que armazena o melhor valor de fit já encontrado
 int gen = 0;
 
-Obstaculo[] obs = new Obstaculo[4];            //Vetor com todos os obstáculos
+Obstaculo[] obs = new Obstaculo[3];            //Vetor com todos os obstáculos
 Caminho cam = new Caminho();                   //Objeto que possui todos os caminhos e funcções de AG
 void setup(){
   start();
@@ -17,14 +17,13 @@ void setup(){
   //y = (int) random(0, 500);
   
   //Posição do destino
-  x = 650;                                     
-  y = 50;
+  x = 700;                                     
+  y = 100;
   
   //Definição dos obstáculos e suas coordenadas
   obs[0] = new Obstaculo(0, 550, 150, 30);     
-  obs[1] = new Obstaculo(100, 700, 400, 30);
-  obs[2] = new Obstaculo(200, 30, 300, 125);
-  obs[3] = new Obstaculo(400, 30, 150, 125);
+  obs[1] = new Obstaculo(0, 700, 400, 30);
+  obs[2] = new Obstaculo(100, 700, 200, 30);
   cam = new Caminho();
   cam.fitall();
   cam.sort();
@@ -46,10 +45,13 @@ void draw(){
   
   //Desenha todos obstáculos
   for(int i = 0; i < obs.length; i++)
-    obs[i].desenhar(); 
+    obs[i].desenhar();
+  
+ // Caminho cam = new Caminho(); //APENAS PARA TESTE
+ 
 
   gen++;
-  for(int j = 0; j < 50; j++){
+  for(int j = 0; j < POP_SIZE; j++){
     desenha_caminho(cam.caminhos[j], color(0, 0, 255));
   }
   
@@ -68,8 +70,11 @@ void draw(){
   desenha_caminho(melhor_caminho, color(255, 0, 0));
   //delay(500);
   
-  cam.evolve();  
+  
+  cam.evolve();
+    
 }
+
 
 void desenha_caminho(float caminho[], color c){
     xi = xinicio;
@@ -84,9 +89,10 @@ void desenha_caminho(float caminho[], color c){
         if(obs[k].lineRect(xi, yi, xii, yii)) colisao = true;
       }
       
-      if(xii < 0 || yii < 0 || xii >= width - 1 || yii >= height - 1) colisao = true;
-      
       if(colisao)
+        break;
+      
+      if(dist(xii, yii, x, y) < 10)
         break;
       
       stroke(c);
@@ -95,8 +101,5 @@ void desenha_caminho(float caminho[], color c){
       
       xi = xii;
       yi = yii;
-      
-      if(dist(xii, yii, x, y) < 10)
-        break;
     }  
 }
