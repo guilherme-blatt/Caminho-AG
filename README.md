@@ -7,7 +7,7 @@ Igor Rodrigues - 9771654
 ## Vídeo
 Abaixo é possível ver um vídeo criado para demostrar o funcionamento do programa
 
-
+https://youtu.be/mo3G50hJFzc
 ## Idéia
 O problema consiste em um ponto inicial e um ponto final, e é necessário achar um caminho entre esses pontos, sendo que existem obstáculos no caminho
 
