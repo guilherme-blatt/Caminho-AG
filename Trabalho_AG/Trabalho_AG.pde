@@ -1,6 +1,6 @@
 int x = 0, y = 0;                              //Variáveis que indicam o as coordenadas do destino
 int xi, yi;                                    //Variáveis auxiliares para cálculo dos trajetos
-int xinicio = 400, yinicio = 550;
+int xinicio = 100, yinicio = 550;
 int step = 20;                                 //Variável que indica o passo das linhas
 float melhor_caminho[] = {0};                  //Vetor que armazena o melhor caminho encontrado até o momento
 float melhor_fit = 999;                        //Variável que armazena o melhor valor de fit já encontrado
@@ -17,12 +17,12 @@ void setup(){
   //y = (int) random(0, 500);
   
   //Posição do destino
-  x = 400;                                     
+  x = 700;                                     
   y = 100;
   
   //Definição dos obstáculos e suas coordenadas
-  obs[0] = new Obstaculo(0, 450, 200, 30);     
-  obs[1] = new Obstaculo(300, 500, 400, 30);
+  obs[0] = new Obstaculo(0, 550, 150, 30);     
+  obs[1] = new Obstaculo(100, 700, 400, 30);
   cam = new Caminho();
   cam.fitall();
   cam.sort();
@@ -50,7 +50,7 @@ void draw(){
  
 
   gen++;
-  for(int j = 0; j < 10; j++){
+  for(int j = 0; j < POP_SIZE; j++){
     desenha_caminho(cam.caminhos[j], color(0, 0, 255));
   }
   
@@ -67,7 +67,7 @@ void draw(){
   text("Best Generation Fit: " + melhor_fit_gen, 10, 40);
   text("Generation: " + gen, 10, 60);
   desenha_caminho(melhor_caminho, color(255, 0, 0));
-  delay(100);
+  //delay(500);
   
   
   cam.evolve();

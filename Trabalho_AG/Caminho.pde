@@ -1,5 +1,5 @@
-int POP_SIZE = 150;
-int NUMBER_SEG = 40;
+int POP_SIZE = 300;
+int NUMBER_SEG = 100;
 
 class Caminho{
   float[] melhorcaminho = {0, 1, 1.1, 0.6, 0.8}; 
@@ -48,8 +48,9 @@ class Caminho{
   float fitness(float[] caminho){
     xi = xinicio;
     yi = yinicio;
-    float fit = 0;
-    int k = 0;
+    float fit =999;
+    float punicao = 0;
+    int k = 1;
     for(int i = 0; i < caminho.length; i++){
       int xii = (int)(xi - step*sin(caminho[i]));
       int yii = (int)(yi - step*cos(caminho[i]));
@@ -61,17 +62,26 @@ class Caminho{
       }
       
       if(colisao){
-        fit += 1000;
+        punicao = (300 - i*10);
+        if(punicao < 0) punicao = 0;
         break;
       }
       
-      if(dist(xii, yii, x, y) < 10)
-        break;
-      
       xi = xii;
       yi = yii;
+      
+     float afit = dist(xii, yii, x, y);
+     if(afit < fit){
+        fit = afit;
+        if(fit < 10){
+          fit = 10;
+          break;
+        }
+     }
+      
+
     }
-    fit += dist(x, y, xi, yi)*k;
+   // fit = dist(x, y, xi, yi);
     return fit;
   }
   
@@ -87,8 +97,8 @@ class Caminho{
    
     for(int i = 0; i < NUMBER_SEG; i++){
       float p = random(0, 100);
-      if(p < 80){
-        filho[i] = ((p-1)*caminho1[i] + p*caminho2[i])/100; 
+      if(p < 70){
+        filho[i] = ((100-p)*caminho1[i] + p*caminho2[i])/100; 
       }
       else filho[i] = random(-PI/2, PI/2);    
     }  
@@ -97,10 +107,18 @@ class Caminho{
   
   //Mutação - Adiciona um valor pequeno pra cada parametro de cada filho - talvez seja melhor nao colocar sempre e diminuir o range de valores
   void mutate(){
-    int i, j;
-    for(i = 0; i < POP_SIZE; i++){
+    int imax, jmax;
+   /* for(i = 0; i < POP_SIZE; i++){
       j = (int)random(0, NUMBER_SEG);
-      caminhosfilhos[i][j] += random(-PI/4, PI/4);
+      caminhosfilhos[i][j] *= random(-2, -2);
+    }*/
+    imax = (int) random(0, POP_SIZE);
+    
+    for(int i = 0; i < imax; i++){
+      jmax = (int) random(0, NUMBER_SEG);
+      for(int j = 0; j < jmax; j++){
+         caminhosfilhos[(int)random(0,POP_SIZE)][(int)random(0,NUMBER_SEG)] = random(-PI/2, PI/2); 
+      }
     }
   }
   
@@ -149,6 +167,7 @@ class Caminho{
   //Apos a evolve() a pop ja esta atualizada
   void evolve(){
     int bestFit = 0, secondBestFit = 1;
+    //caminhosfilhos = caminhos;
    
     for(int i = 0; i < (int) POP_SIZE/3; i++){
       if(i != bestFit && i!= secondBestFit){
@@ -158,13 +177,21 @@ class Caminho{
       }
     }
    
-    for(int i =(int) POP_SIZE/3; i < (int) POP_SIZE; i++){
+    for(int i =(int) POP_SIZE/3; i < (int) POP_SIZE*2/3; i++){
       if(i != bestFit && i!= secondBestFit){
-        println(bestFit, secondBestFit, i);
-        println(caminhos.length);
+       // println(bestFit, secondBestFit, i);
+        //println(caminhos.length);
         caminhosfilhos[i] = crossover(caminhos[bestFit], caminhos[secondBestFit]);
       }
     }
+
+    for(int i =(int) POP_SIZE*2/3; i < (int) POP_SIZE; i++){
+      for(int j = 0; j < NUMBER_SEG; j++){
+         caminhosfilhos[i][j] = random(-PI/2, PI/2); 
+         caminhosfilhos[i] = crossover(caminhos[bestFit+(int)(random(POP_SIZE/10))], caminhosfilhos[i]);
+      }
+    }
+    
     mutate();
     for(int i = 0; i < POP_SIZE; i++){
       fitnessfilhos[i] = fitness(caminhosfilhos[i]);
