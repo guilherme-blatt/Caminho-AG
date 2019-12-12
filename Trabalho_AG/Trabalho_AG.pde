@@ -1,30 +1,33 @@
-int x = 0, y = 0;                              //Variáveis que indicam o as coordenadas do destino
+int x = 650, y = 50;                           //Variáveis que indicam o as coordenadas do destino
+int xinicio = 100, yinicio = 550;              //Coordenadas do ponto de ínicio
 int xi, yi;                                    //Variáveis auxiliares para cálculo dos trajetos
-int xinicio = 100, yinicio = 550;
-int step = 30;                                 //Variável que indica o passo das linhas
-float melhor_caminho[] = {0};                  //Vetor que armazena o melhor caminho encontrado até o momento
-float melhor_fit = 999;                        //Variável que armazena o melhor valor de fit já encontrado
-int gen = 0;
+
+int step = 30;                                 //Variável que indica o tamanho do passo das linhas
+int gen = 0;                                   //Variável que indica a geração atual
 
 Obstaculo[] obs = new Obstaculo[4];            //Vetor com todos os obstáculos
 Caminho cam = new Caminho();                   //Objeto que possui todos os caminhos e funcções de AG
+
 void setup(){
   start();
   size(800, 600);
   
-  //Opção para um ponto aleatório de destino
-  //x = (int) random(0, 800);                  
-  //y = (int) random(0, 500);
-  
-  //Posição do destino
-  x = 650;                                     
-  y = 50;
-  
   //Definição dos obstáculos e suas coordenadas
-  obs[0] = new Obstaculo(0, 550, 150, 30);     
+  /*obs[0] = new Obstaculo(0, 550, 150, 30);     
   obs[1] = new Obstaculo(100, 700, 400, 30);
   obs[2] = new Obstaculo(200, 30, 300, 125);
-  obs[3] = new Obstaculo(400, 30, 150, 125);
+  obs[3] = new Obstaculo(400, 30, 150, 125);*/
+  
+  obs[0] = new Obstaculo(600, 100, 150, 30);     
+  obs[1] = new Obstaculo(0, 700, 400, 30);
+  obs[2] = new Obstaculo(670, 30, 100, 50);
+  
+  /*obs[0] = new Obstaculo(0, 700, 150, 30);
+  obs[1] = new Obstaculo(100, 700, 300, 30);
+  obs[2] = new Obstaculo(0, 700, 450, 30);*/
+  
+  
+  //Inicia o objeto Caminho
   cam = new Caminho();
   cam.fitall();
   cam.sort();
@@ -46,34 +49,38 @@ void draw(){
   
   //Desenha todos obstáculos
   for(int i = 0; i < obs.length; i++)
-    obs[i].desenhar();
-  
- // Caminho cam = new Caminho(); //APENAS PARA TESTE
+    if(obs[i] != null) obs[i].desenhar();
  
-
+  //Incrementa a geração
   gen++;
-  for(int j = 0; j < 50; j++){
+  
+  //Desenha todos os caminhos na tela na cor azul
+  for(int j = 0; j < 200; j++){
     desenha_caminho(cam.caminhos[j], color(0, 0, 255));
   }
   
-  if(cam.fitness[0] < melhor_fit){
-    melhor_fit = cam.fitness[0];
-    melhor_caminho = cam.caminhos[0];
-  }
   melhor_fit_gen = cam.fitness[0];
-  
+
+  //Escreve texto na tela e desenha o melhor caminho em vermelho
   textSize(18);
   fill(255, 0, 0);
-  text("Best Fit Overall: " + melhor_fit, 10, 20);
   fill(0);
-  text("Best Generation Fit: " + melhor_fit_gen, 10, 40);
-  text("Generation: " + gen, 10, 60);
-  desenha_caminho(melhor_caminho, color(255, 0, 0));
+  text("Best Generation Fit: " + melhor_fit_gen, 10, 20);
+  text("Generation: " + gen, 10, 40);
+  desenha_caminho(cam.caminhos[0], color(255, 0, 0));
   //delay(500);
   
   
   cam.evolve();
     
+}
+
+//Escolhe a posição do final manualmente
+void mouseClicked(){
+   x = mouseX;
+   y = mouseY;
+   cam.fitall();
+    cam.sort();
 }
 
 
@@ -87,15 +94,13 @@ void desenha_caminho(float caminho[], color c){
       boolean colisao = false;
       
       for(int k = 0; k < obs.length; k++){
-        if(obs[k].lineRect(xi, yi, xii, yii)) colisao = true;
+        if(obs[k] != null && obs[k].lineRect(xi, yi, xii, yii)) colisao = true;
       }
       
       if(xii < 0 || yii < 0 || xii >= width - 1 || yii >= height - 1) colisao = true;
       
       if(colisao)
         break;
-      
-
       
       stroke(c);
       line(xi, yi, xii, yii);
