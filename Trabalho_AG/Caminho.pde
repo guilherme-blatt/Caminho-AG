@@ -1,5 +1,6 @@
-int POP_SIZE = 300;
-int NUMBER_SEG = 50;
+int POP_SIZE = 500;
+int NUMBER_SEG = 60;
+float MAX_ANGLE = PI;
 
 class Caminho{
   float[] melhorcaminho = {0, 1, 1.1, 0.6, 0.8}; 
@@ -61,10 +62,10 @@ class Caminho{
         if(obs[k].lineRect(xi, yi, xii, yii)) colisao = true;
       }
       
-      if(xii < 0 || yii < 0) colisao = true;
+      if(xii < 0 || yii < 0 || xii >= width - 1 || yii >= height - 1) colisao = true;
       
       if(colisao){
-        punicao = (1000 - i*50);
+        punicao = (1000 - i*60);
         if(punicao < 0) punicao = 0;
         break;
       }
@@ -83,8 +84,8 @@ class Caminho{
       
 
     }
-   // fit = dist(x, y, xi, yi);
-    return fit + punicao;
+    //fit = 1000 - dist(xinicio , yinicio, xi, yi);
+    return fit;
   }
   
   void fitall(){
@@ -102,7 +103,7 @@ class Caminho{
       if(p < 70){
         filho[i] = ((100-p)*caminho1[i] + p*caminho2[i])/100; 
       }
-      else filho[i] = random(-PI/1.5, PI/1.5);    
+      else filho[i] = random(-MAX_ANGLE, MAX_ANGLE);    
     }  
     return filho;   
   }
@@ -119,7 +120,7 @@ class Caminho{
     for(int i = 0; i < imax; i++){
       jmax = (int) random(0, NUMBER_SEG);
       for(int j = 0; j < jmax; j++){
-         caminhosfilhos[(int)random(0,POP_SIZE)][(int)random(0,NUMBER_SEG)] = random(-PI/1.5, PI/1.5); 
+         caminhosfilhos[(int)random(0,POP_SIZE)][(int)random(0,NUMBER_SEG)] = random(-MAX_ANGLE, MAX_ANGLE); 
       }
     }
   }
@@ -189,7 +190,7 @@ class Caminho{
 
     for(int i =(int) POP_SIZE*2/3; i < (int) POP_SIZE; i++){
       for(int j = 0; j < NUMBER_SEG; j++){
-         caminhosfilhos[i][j] = random(-PI/1.5, PI/1.5); 
+         caminhosfilhos[i][j] = random(-MAX_ANGLE, MAX_ANGLE); 
          caminhosfilhos[i] = crossover(caminhos[bestFit+(int)(random(POP_SIZE/10))], caminhosfilhos[i]);
       }
     }

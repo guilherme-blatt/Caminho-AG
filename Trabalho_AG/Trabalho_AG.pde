@@ -6,7 +6,7 @@ float melhor_caminho[] = {0};                  //Vetor que armazena o melhor cam
 float melhor_fit = 999;                        //Variável que armazena o melhor valor de fit já encontrado
 int gen = 0;
 
-Obstaculo[] obs = new Obstaculo[2];            //Vetor com todos os obstáculos
+Obstaculo[] obs = new Obstaculo[4];            //Vetor com todos os obstáculos
 Caminho cam = new Caminho();                   //Objeto que possui todos os caminhos e funcções de AG
 void setup(){
   start();
@@ -17,12 +17,14 @@ void setup(){
   //y = (int) random(0, 500);
   
   //Posição do destino
-  x = 700;                                     
-  y = 100;
+  x = 650;                                     
+  y = 50;
   
   //Definição dos obstáculos e suas coordenadas
   obs[0] = new Obstaculo(0, 550, 150, 30);     
   obs[1] = new Obstaculo(100, 700, 400, 30);
+  obs[2] = new Obstaculo(200, 30, 300, 125);
+  obs[3] = new Obstaculo(400, 30, 150, 125);
   cam = new Caminho();
   cam.fitall();
   cam.sort();
@@ -50,7 +52,7 @@ void draw(){
  
 
   gen++;
-  for(int j = 0; j < POP_SIZE; j++){
+  for(int j = 0; j < 50; j++){
     desenha_caminho(cam.caminhos[j], color(0, 0, 255));
   }
   
@@ -88,11 +90,12 @@ void desenha_caminho(float caminho[], color c){
         if(obs[k].lineRect(xi, yi, xii, yii)) colisao = true;
       }
       
+      if(xii < 0 || yii < 0 || xii >= width - 1 || yii >= height - 1) colisao = true;
+      
       if(colisao)
         break;
       
-      if(dist(xii, yii, x, y) < 10)
-        break;
+
       
       stroke(c);
       line(xi, yi, xii, yii);
@@ -100,5 +103,8 @@ void desenha_caminho(float caminho[], color c){
       
       xi = xii;
       yi = yii;
+      
+      if(dist(xii, yii, x, y) < 10)
+        break;
     }  
 }
