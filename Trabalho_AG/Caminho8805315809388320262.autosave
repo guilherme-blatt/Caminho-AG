@@ -1,5 +1,5 @@
 int POP_SIZE = 500;
-int NUMBER_SEG = 150;
+int NUMBER_SEG = 60;
 float MAX_ANGLE = PI;
 
 class Caminho{
@@ -19,7 +19,7 @@ class Caminho{
     }
   }
  
- //Ordenar população - Bubble sort para ordenar a primeira população
+ //Ordenar população - Bubble sort simples so pra dar aquela ordenada na primeira população
   void sort(){
     int i, j, k; 
     float[] auxcaminho = new float[NUMBER_SEG];
@@ -41,20 +41,27 @@ class Caminho{
   }
  
   //Avaliação
+  //float fitness(int xii, int yii, int n_caminho){
+  //  float fit = dist(x, y, xii, yii);
+  //  //fitness[n_caminho] = fit;
+  //  return fit;
+  //}
   float fitness(float[] caminho){
     xi = xinicio;
     yi = yinicio;
-    float fit = 999;
+    float fit =999;
     float punicao = 0;
-    int k = 1;
-    for(int i = 0; i < caminho.length; i++){
+    int i, k = 1;
+    float d = 0;
+    for(i = 0; i < caminho.length; i++){
       int xii = (int)(xi - step*sin(caminho[i]));
       int yii = (int)(yi - step*cos(caminho[i]));
+      d += tan(cos(caminho[i])/sin(caminho[i]));
       
       boolean colisao = false;
       
       for(k = 0; k < obs.length; k++){
-        if(obs[k] != null && obs[k].lineRect(xi, yi, xii, yii)) colisao = true;
+        if(obs[k].lineRect(xi, yi, xii, yii)) colisao = true;
       }
       
       if(xii < 0 || yii < 0 || xii >= width - 1 || yii >= height - 1) colisao = true;
@@ -76,10 +83,10 @@ class Caminho{
           break;
         }
      }
-      
-
     }
-    return fit + punicao;
+    //fit = 1000 - dist(xinicio , yinicio, xi, yi);
+    float p = -1;
+    return fit + punicao ;//- i*dist(xinicio , yinicio, xi, yi) + i*dist(x, y, xi, yi);
   }
   
   void fitall(){
@@ -88,7 +95,7 @@ class Caminho{
     }
   }
   
-  //Crossover - 70% de chance do novo parâmetro ser uma mistura dos pais, 30% de ser aleatório
+  //Crossover - 80% de chance de ser uma mistura dos pais, 20% de ser aleatorio
   float[] crossover(float[] caminho1, float[] caminho2){
     float filho[] = new float[NUMBER_SEG];
    
@@ -102,9 +109,13 @@ class Caminho{
     return filho;   
   }
   
-  //Mutação - Altera parâmetros aleatórios dos filhos
+  //Mutação - Adiciona um valor pequeno pra cada parametro de cada filho - talvez seja melhor nao colocar sempre e diminuir o range de valores
   void mutate(){
     int imax, jmax;
+   /* for(i = 0; i < POP_SIZE; i++){
+      j = (int)random(0, NUMBER_SEG);
+      caminhosfilhos[i][j] *= random(-2, -2);
+    }*/
     imax = (int) random(0, POP_SIZE);
     
     for(int i = 0; i < imax; i++){
@@ -115,7 +126,7 @@ class Caminho{
     }
   }
   
-  //Reorganizar população - Cria um vetor com o dobro da população, mistura a população original com os filhos, ordena todo mundo e pega os POP_SIZE melhores
+  //Reorganizar população - Criar um vetor com o dobro da populaçao, misturar a pop original com os filhos, ordenar todo mundo e pegar os POP_SIZE melhores
   void reorganize(){
     float[][] dobrocaminhos = new float[2*POP_SIZE][NUMBER_SEG];
     float[] dobrofitness = new float[2*POP_SIZE];
@@ -156,21 +167,21 @@ class Caminho{
     }
   }
   
-  //Seleção - Mantendo a pop ordenada, os melhores sempre serão os primeiros - Usa um vetor de filhos pra dobrar a populaçao e selecionar os melhores entre pais e filhos
+  //Seleção - Mantendo a pop ordenada, os melhores sempre serao os primeiros // Usar um vetor de filhos pra dobrar a populaçao e selecionar os melhores entre pais e filhos
   //Apos a evolve() a pop ja esta atualizada
   void evolve(){
     int bestFit = 0, secondBestFit = 1;
     //caminhosfilhos = caminhos;
    
-    for(int i = 0; i < (int) POP_SIZE*2/5; i++){
+    for(int i = 0; i < (int) POP_SIZE/3; i++){
       if(i != bestFit && i!= secondBestFit){
-        //println(bestFit, secondBestFit, i);
-        //println(caminhos.length);
+        println(bestFit, secondBestFit, i);
+        println(caminhos.length);
         caminhosfilhos[i] = crossover(caminhos[bestFit], caminhos[(int)random(0, POP_SIZE)]);
       }
     }
    
-    for(int i =(int) POP_SIZE*2/5; i < (int) POP_SIZE*4/5; i++){
+    for(int i =(int) POP_SIZE/3; i < (int) POP_SIZE*2/3; i++){
       if(i != bestFit && i!= secondBestFit){
        // println(bestFit, secondBestFit, i);
         //println(caminhos.length);
@@ -178,10 +189,10 @@ class Caminho{
       }
     }
 
-    for(int i =(int) POP_SIZE*4/5; i < (int) POP_SIZE; i++){
+    for(int i =(int) POP_SIZE*2/3; i < (int) POP_SIZE; i++){
       for(int j = 0; j < NUMBER_SEG; j++){
-        //caminhosfilhos[i] = crossover(caminhos[(int)(random(POP_SIZE/10))], caminhosfilhos[i]);
-        caminhosfilhos[i][j] = random(-MAX_ANGLE, MAX_ANGLE); 
+         caminhosfilhos[i][j] = random(-MAX_ANGLE, MAX_ANGLE); 
+         caminhosfilhos[i] = crossover(caminhos[bestFit+(int)(random(POP_SIZE/10))], caminhosfilhos[i]);
       }
     }
     

@@ -70,9 +70,7 @@ void draw(){
   desenha_caminho(cam.caminhos[0], color(255, 0, 0));
   //delay(500);
   
-  
-  cam.evolve();
-    
+  cam.evolve();  
 }
 
 //Escolhe a posição do final manualmente
