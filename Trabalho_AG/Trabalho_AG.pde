@@ -1,7 +1,7 @@
 int x = 0, y = 0;                              //Variáveis que indicam o as coordenadas do destino
 int xi, yi;                                    //Variáveis auxiliares para cálculo dos trajetos
 int xinicio = 100, yinicio = 550;
-int step = 20;                                 //Variável que indica o passo das linhas
+int step = 30;                                 //Variável que indica o passo das linhas
 float melhor_caminho[] = {0};                  //Vetor que armazena o melhor caminho encontrado até o momento
 float melhor_fit = 999;                        //Variável que armazena o melhor valor de fit já encontrado
 int gen = 0;
